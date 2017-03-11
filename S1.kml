@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
     <Document>
+		<name>AustralianPostcodesSimplified1</name>
+		<Placemark>
+	<name>2000</name>
+	<Style><LineStyle><color>19789600</color><width>6</width></LineStyle><PolyStyle><color>19789600</color><fill>1</fill></PolyStyle></Style>
+      <MultiGeometry><Polygon><altitudeMode>relativeToGround</altitudeMode><outerBoundaryIs><LinearRing><altitudeMode>relativeToGround</altitudeMode><coordinates>151.199535,-33.871163,0 151.200434,-33.873544,0 151.201538,-33.873175,0 151.202381,-33.870369,0 151.201164,-33.869836,0 151.200176,-33.855383,0 151.203508,-33.856577,0 151.203538,-33.855149,0 151.204861,-33.856655,0 151.204154,-33.85476,0 151.205444,-33.856456,0 151.20516,-33.854293,0 151.206344,-33.85578,0 151.206215,-33.853835,0 151.20732,-33.855304,0 151.208622,-33.853554,0 151.210629,-33.855476,0 151.209161,-33.856092,0 151.210435,-33.857424,0 151.209588,-33.860882,0 151.211898,-33.86121,0 151.215566,-33.856112,0 151.218263,-33.863273,0 151.222787,-33.859321,0 151.22294,-33.86242,0 151.217971,-33.870089,0 151.215812,-33.872243,0 151.212848,-33.871801,0 151.212115,-33.876905,0 151.209084,-33.879797,0 151.206899,-33.885813,0 151.203078,-33.884893,0 151.203761,-33.883666,0 151.196958,-33.873028,0 151.19804,-33.868586,0 151.199271,-33.868551,0 151.199535,-33.871163,0</coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><altitudeMode>relativeToGround</altitudeMode><outerBoundaryIs><LinearRing><altitudeMode>relativeToGround</altitudeMode><coordinates>151.195002,-33.852709,0 151.19638,-33.851099,0 151.19892,-33.85092,0 151.196635,-33.853692,0 151.195002,-33.852709,0</coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><altitudeMode>relativeToGround</altitudeMode><outerBoundaryIs><LinearRing><altitudeMode>relativeToGround</altitudeMode><coordinates>151.225636,-33.855164,0 151.225087,-33.855179,0 151.226012,-33.854605,0 151.225996,-33.854906,0 151.225636,-33.855164,0</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
         <Placemark>
             <name>2006</name>
 			<Style><LineStyle><color>19789600</color><width>10</width></LineStyle><PolyStyle><color>19789600</color><fill>1</fill></PolyStyle></Style>
