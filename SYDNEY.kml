@@ -3,6 +3,7 @@
     <Document>
         <Placemark>
             <name>SYDNEY</name>
+			<Style><LineStyle><color>19789600</color><width>6</width></LineStyle><PolyStyle><color>19789600</color><fill>1</fill></PolyStyle></Style>
             <MultiGeometry>
                 <Polygon>
                     <outerBoundaryIs>
