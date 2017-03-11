@@ -11,7 +11,7 @@
 </head>
 <body>
   <div id="map_canvas"></div>
-  <div id="googleMap" style="width:100%;height:400px;"></div>
+  <div id="googleMap" style="width:100%;height:500px;"></div>
 
   <script>
   function myMap() {
@@ -22,7 +22,7 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-  var kmzLayer = new google.maps.KmlLayer("AustralianPostcodesSimplified.kml");
+  var kmzLayer = new google.maps.KmlLayer("https://raw.githubusercontent.com/thinksource/aupostal/master/AustralianPostcodesSimplified.kml");
   kmzLayer.setMap(map);
   // map.data.loadGeoJson(
   //           'https://storage.googleapis.com/mapsdevsite/json/google.json');
