@@ -22,7 +22,7 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-  var kmzLayer = new google.maps.KmlLayer("https://raw.githubusercontent.com/thinksource/aupostal/master/AustralianPostcodesSimplified.kml");
+  var kmzLayer = new google.maps.KmlLayer("https://github.com/aidanmorgan/aus_suburb_kml/raw/master/NSW/SYDNEY.kml");
   kmzLayer.setMap(map);
   // map.data.loadGeoJson(
   //           'https://storage.googleapis.com/mapsdevsite/json/google.json');
