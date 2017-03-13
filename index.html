@@ -18,15 +18,14 @@
   <div id="googleMap" style="width:100%;height:500px;"></div>
 
   <script>
-  scale=9862
-  var jqxhr=$.getJSON("postheat.json",function(data){
+  scale=9862;
+  jsonmap={};
+  jqxhr=$.getJSON("postheat.json",function(data){
     return data}).done(function(data){
-
+      jsonmap=data;
       return data;
     });
-  jqxhr.done(function(data){
-    jsonmap=data;
-  });
+
 
 
   function rgb(r, g, b){
