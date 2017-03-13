@@ -1,94 +1,123 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
-<style>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
 
-html, body, #map {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="map.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-.stations, .stations svg {
-  position: absolute;
-}
+</head>
+<body>
+  <header>
+    <h2>The heatmap of Speeding issued by Police and Camera PNs(2014/15)</h2>
+  </header>
+  <div id="map_canvas"></div>
+  <div id="googleMap" style="width:100%;height:500px;"></div>
 
-.stations svg {
-  width: 60px;
-  height: 20px;
-  padding-right: 100px;
-  font: 10px sans-serif;
-}
+  <script>
+  scale=9862
+  var jqxhr=$.getJSON("postheat.json",function(data){
+    return data}).done(function(data){
 
-.stations circle {
-  fill: brown;
-  stroke: black;
-  stroke-width: 1.5px;
-}
+      return data;
+    });
+  jqxhr.done(function(data){
+    jsonmap=data;
+  });
 
-</style>
-<div id="map"></div>
-<script src="//maps.google.com/maps/api/js?sensor=true"></script>
-<script src="//d3js.org/d3.v3.min.js"></script>
-<script>
 
-// Create the Google Map…
-var map = new google.maps.Map(d3.select("#map").node(), {
-  zoom: 8,
-  center: new google.maps.LatLng(37.76487, -122.41948),
-  mapTypeId: google.maps.MapTypeId.ROADMAP
-});
-
-// Load the station data. When the data comes back, create an overlay.
-d3.json("stations.json", function(error, data) {
-  if (error) throw error;
-
-  var overlay = new google.maps.OverlayView();
-
-  // Add the container when the overlay is added to the map.
-  overlay.onAdd = function() {
-    var layer = d3.select(this.getPanes().overlayLayer).append("div")
-        .attr("class", "stations");
-
-    // Draw each marker as a separate SVG element.
-    // We could use a single SVG, but what size would it have?
-    overlay.draw = function() {
-      var projection = this.getProjection(),
-          padding = 10;
-
-      var marker = layer.selectAll("svg")
-          .data(d3.entries(data))
-          .each(transform) // update existing markers
-        .enter().append("svg")
-          .each(transform)
-          .attr("class", "marker");
-
-      // Add a circle.
-      marker.append("circle")
-          .attr("r", 4.5)
-          .attr("cx", padding)
-          .attr("cy", padding);
-
-      // Add a label.
-      marker.append("text")
-          .attr("x", padding + 7)
-          .attr("y", padding)
-          .attr("dy", ".31em")
-          .text(function(d) { return d.key; });
-
-      function transform(d) {
-        d = new google.maps.LatLng(d.value[1], d.value[0]);
-        d = projection.fromLatLngToDivPixel(d);
-        return d3.select(this)
-            .style("left", (d.x - padding) + "px")
-            .style("top", (d.y - padding) + "px");
-      }
-    };
+  function rgb(r, g, b){
+  return "rgb("+r+","+g+","+b+")";
   };
 
-  // Bind our overlay to the map…
-  overlay.setMap(map);
+  function getheatcolor(num, scala){
+    mid=Math.round(scala/2);
+    if(num<=mid){
+      color_number=Math.round((1-num/mid)*255.49);
+      return rgb(255, color_number, color_number);
+    }else{
+      color_number=Math.round((2-num/mid)*255.49);
+      return rgb(color_number, 0,0);
+    }
+  }
+  function myMap() {
+
+  var mapProp= {
+      center:{lat: -33, lng: 151},
+      //new google.maps.LatLng(-31.508742,138.120850),
+      zoom:7,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    console.log(map.getZoom());
+  });
+  map.data.addListener("addfeature", function(e){
+    var padding = 10;
+    var g=e.feature.getGeometry();
+
+    var bounds = new google.maps.LatLngBounds();
+    g.forEachLatLng(function(LatLng){
+      bounds.extend(LatLng);
+    });
+    var central=bounds.getCenter();
+    var postcode=e.feature.getProperty("Name");
+    var labelstr="None"+"("+postcode+")";
+    if(jsonmap.hasOwnProperty(postcode)){
+      lavelstr=jsonmap[postcode]+"("+postcode+")";
+    }
+    var marker = new google.maps.Marker({
+      position: central,
+      label: lavelstr
+    });
+    marker.setMap(map);
+    // var mapLabel2 = new MapLabel({
+    //   text: e.feature.getProperty("title"),
+    //   position: central,
+    //   map: map,
+    //   fontSize: 20,
+    //   align: 'center'
+    // });
+    return e.feature;
+  });
+  map.data.loadGeoJson('S4.json');
+  map.data.setStyle(function(feature) {
+  var color = "rgb(255, 255, 255)";
+  var postcode=feature.getProperty("Name");
+  if (jsonmap.hasOwnProperty(postcode)) {
+    color = getheatcolor(jsonmap[postcode], scale);
+  }
+  return /** @type {google.maps.Data.StyleOptions} */({
+    fillColor: color,
+    strokeColor: color,
+    fillOpacity:0.5,
+    strokeWeight: 2
+  });
+
 });
 
-</script>
+  // var mapLabel = new MapLabel({
+  // text: 'Test',
+  // position: new google.maps.LatLng(-33, 151),
+  // map: map,
+  // fontSize: 35,
+  // align: 'right'
+  // });
+  // var marker = new google.maps.Marker();
+  // marker.bindTo('map', mapLabel);
+  // marker.bindTo('position', mapLabel);
+  // marker.setDraggable(true);
+  // var kmzLayer = new google.maps.KmlLayer("https://github.com/thinksource/aupostal/raw/master/S2.kml");
+  // kmzLayer.setMap(map);
+  // map.data.loadGeoJson(
+  //           'https://storage.googleapis.com/mapsdevsite/json/google.json');
+  //
+   }
+  </script>
+  <script src="//maps.google.com/maps/api/js?sensor=true&callback=myMap"></script>
+  <script src="js/maplabel.js"></script>
+</body>
+</html>
